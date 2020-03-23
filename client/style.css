@@ -1,0 +1,129 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans&display=swap');
+
+body {
+  background: #282c34;
+  color: #fff;
+  font-family: 'Open Sans', sans-serif;
+  padding: 30px;
+  text-align: center;
+}
+
+h1 {
+  font-weight: lighter;
+}
+
+p {
+  color: #999;
+  font-size: 0.8rem;
+}
+
+.btn {
+  background: #0064e7;
+  border: none;
+  border-radius: 15px;
+  padding: 10px 25px;
+  color: #fff;
+  font-family: inherit;
+  margin: 20px 10px;
+  text-transform: uppercase;
+  outline: none;
+  transition: .2s;
+  cursor: pointer;
+}
+
+.btn:hover {
+  box-shadow: 0 0 20px rgba(0,0,0,0.2);
+}
+
+.text-input {
+  background: none;
+  border: none;
+  color: #fff;
+  border-bottom: 2px solid #0064e7;
+  padding: 8px 25px 8px 5px;
+  font-family: inherit;
+  outline: none;
+  opacity: 0.6;
+  transition: .3s;
+}
+
+.text-input:focus {
+  opacity: 1;
+}
+
+.welcome-form {
+  display: none;
+}
+
+.messages-section {
+  margin-bottom: 100px;
+  display: none;
+}
+
+.messages-section__list {
+  max-width: 400px;
+  list-style-type: none;
+  padding: 0;
+  margin: 20px auto 40px auto;
+}
+
+.message {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.message--self {
+  align-items: flex-end;
+}
+
+.message--received {
+    animation: fadeIn;
+    animation-duration: 3s;
+}
+
+.message__author {
+  font-size: 0.8rem;
+  font-weight: bold;
+  color: #999;
+  text-align: right;
+}
+
+.message__content {
+  background: rgb(68, 68, 68);
+  border: none;
+  border-radius: 15px 5px 15px 15px;
+  padding: 10px 25px;
+  color: #fff;
+  font-size: 0.9rem;
+  max-width: 200px;
+}
+
+.message--self .message__content {
+  background: #3498db;
+}
+
+.show {
+  display: block;
+}
+
+@-webkit-keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
