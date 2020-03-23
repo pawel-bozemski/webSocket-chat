@@ -26,7 +26,7 @@ function sendMessage(e) {
 
   if(messageContentInput.value !== '') {
     addMessage(userName, messageContentInput.value);
-    messageContentInput = '';
+    messageContentInput.value = '';
   } else {
     alert ('Type your message');
   };
