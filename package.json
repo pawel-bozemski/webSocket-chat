@@ -1,8 +1,15 @@
 {
-  "name": "webSocketChat",
+  "name": "chat",
   "version": "1.0.0",
   "main": "index.js",
   "repository": "https://github.com/pawel-bozemski/webSocket-chat.git",
   "author": "Pawel Bozemski <paw.boz@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "start": "nodemon server.js"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "nodemon": "^2.0.2"
+  }
 }
