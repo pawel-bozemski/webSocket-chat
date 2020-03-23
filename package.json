@@ -1,6 +1,8 @@
 {
-  "name": "webSocket-chat",
+  "name": "webSocketChat",
   "version": "1.0.0",
   "main": "index.js",
+  "repository": "https://github.com/pawel-bozemski/webSocket-chat.git",
+  "author": "Pawel Bozemski <paw.boz@gmail.com>",
   "license": "MIT"
 }
