@@ -6,13 +6,13 @@ const userNameInput = document.getElementById('username');
 const messageContentInput = document.getElementById('message-content');
 
 const socket = io();
-socket.on('message', ({ author, content }) => addMessage(author, content));
+socket.on('message', ({ author, date, content }) => addMessage(author, date, content));
 socket.on('join', ({ name }) =>
-  addMessage('Chat Bot', `${name} has joined the chat`)
-);
+addMessage('Chat Bot', null, name + 'has joined the chat'));
+
 socket.on('removeUser', ({ name }) =>
-  addMessage('Chat Bot', `${name} has left the chat`)
-);
+  addMessage('Chat Bot', null, name + 'has left the chat'));
+
 
 let userName = '';
 
@@ -36,17 +36,23 @@ function sendMessage(e) {
 
   let messageContent = messageContentInput.value;
 
+  const todaysDate = new Date();
+  const min = todaysDate.getMinutes().toString().padStart(2, 0);
+  const hour = todaysDate.getHours().toString().padStart(2, 0);
+  const date = `${hour}:${min}`
+
   if(!messageContent.length) {
     alert('You have to type something!');
   }
   else {
-    addMessage(userName, messageContent);
-    socket.emit('message', { author: userName, content: messageContent })
+    addMessage(userName, date, messageContent);
+    socket.emit('message', { author: userName, date: date, content: messageContent })
     messageContentInput.value = '';
   }
 }
 
-function addMessage(author, content) {
+function addMessage(author, date, content) {
+
   const message = document.createElement('li');
   message.classList.add('message');
   message.classList.add('message--received');
@@ -61,14 +67,22 @@ function addMessage(author, content) {
       ${content}
     </div>
   `;
+
+  const time = document.createElement('div');
+  time.classList.add('message--time');
+  time.innerHTML = date;
+
   const deleteMsg = document.createElement('span');
   deleteMsg.classList.add('message--delete');
   deleteMsg.innerHTML = 'x';
   if(author === userName) {
-  deleteMsg.addEventListener('click', () => message.remove());
+    deleteMsg.addEventListener('click', () => message.remove());
   }
-  message.appendChild(deleteMsg);
 
+ if (author !== 'Chat Bot') {
+  message.appendChild(deleteMsg); 
+}
+  message.appendChild(time);
   messagesList.appendChild(message);
 }
 

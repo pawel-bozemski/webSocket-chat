@@ -98,6 +98,7 @@ p {
   color: #fff;
   font-size: 0.9rem;
   max-width: 200px;
+  position: relative;
 }
 
 .message--self .message__content {
@@ -109,9 +110,7 @@ p {
 }
 
 .message--delete {
-  position: relative;
-  right: 4px;
-  top: -40px;
+  position: absolute;
   cursor: pointer;
 }
 
