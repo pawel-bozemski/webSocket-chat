@@ -61,6 +61,14 @@ function addMessage(author, content) {
       ${content}
     </div>
   `;
+  const deleteMsg = document.createElement('span');
+  deleteMsg.classList.add('message--delete');
+  deleteMsg.innerHTML = 'x';
+  if(author === userName) {
+  deleteMsg.addEventListener('click', () => message.remove());
+  }
+  message.appendChild(deleteMsg);
+
   messagesList.appendChild(message);
 }
 

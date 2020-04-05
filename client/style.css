@@ -108,6 +108,13 @@ p {
   font-style: oblique;
 }
 
+.message--delete {
+  position: relative;
+  right: 4px;
+  top: -40px;
+  cursor: pointer;
+}
+
 .show {
   display: block;
 }
