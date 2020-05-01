@@ -1,3 +1,5 @@
+/* eslint-disable linebreak-style */
+/* eslint-disable require-jsdoc */
 const loginForm = document.getElementById('welcome-form');
 const messagesSection = document.getElementById('messages-section');
 const messagesList = document.getElementById('messages-list');
@@ -6,26 +8,30 @@ const userNameInput = document.getElementById('username');
 const messageContentInput = document.getElementById('message-content');
 
 const socket = io();
-socket.on('message', ({ author, date, content }) => addMessage(author, date, content));
-socket.on('join', ({ name }) =>
-addMessage('Chat Bot', null, name + 'has joined the chat'));
+socket.on('message', ({author, date, content, id}) =>
+  addMessage(author, date, content, id));
 
-socket.on('removeUser', ({ name }) =>
-  addMessage('Chat Bot', null, name + 'has left the chat'));
+socket.on('deleteMessage', (message) =>
+  document.getElementById(message).remove());
 
+socket.on('join', ({name}) =>
+  addMessage('Chat Bot', null, name + ' ' + 'has joined the chat'));
+
+socket.on('removeUser', ({name}) =>
+  addMessage('Chat Bot', null, name + ' '+ 'has left the chat'));
 
 let userName = '';
 
 // funtctions
 
-function login (e) {
+function login(e) {
   e.preventDefault();
 
-  if(userNameInput.value !== '') {
+  if (userNameInput.value !== '') {
     userName = userNameInput.value;
     loginForm.classList.toggle('show');
     messagesSection.classList.add('show');
-    socket.emit('join', {name: userName, id: socket.id });
+    socket.emit('join', {name: userName, id: socket.id});
   } else {
     alert('Please enter your login');
   };
@@ -34,31 +40,34 @@ function login (e) {
 function sendMessage(e) {
   e.preventDefault();
 
-  let messageContent = messageContentInput.value;
-
+  const messageContent = messageContentInput.value;
   const todaysDate = new Date();
   const min = todaysDate.getMinutes().toString().padStart(2, 0);
   const hour = todaysDate.getHours().toString().padStart(2, 0);
-  const date = `${hour}:${min}`
+  const date = `${hour}:${min}`;
 
-  if(!messageContent.length) {
+  if (!messageContent.length) {
     alert('You have to type something!');
   }
-  else {
-    addMessage(userName, date, messageContent);
-    socket.emit('message', { author: userName, date: date, content: messageContent })
-    messageContentInput.value = '';
-  }
+  const newMessageId = Math.floor(Math.random() * 100);
+  addMessage(userName, date, messageContent, newMessageId);
+  socket.emit('message', {
+    author: userName,
+    date: date,
+    content: messageContent,
+    id: newMessageId,
+  });
+  messageContentInput.value = '';
 }
 
-function addMessage(author, date, content) {
-
+function addMessage(author, date, content, id) {
   const message = document.createElement('li');
+  message.setAttribute('id', id);
   message.classList.add('message');
   message.classList.add('message--received');
-  if(author === userName) {
-   message.classList.add('message--self');
-  } else if (author === 'Chat Box'){
+  if (author === userName) {
+    message.classList.add('message--self');
+  } else if (author === 'Chat Box') {
     message.classList.add('message--chatbox');
   }
   message.innerHTML = `
@@ -73,27 +82,29 @@ function addMessage(author, date, content) {
   time.innerHTML = date;
 
   const deleteMsg = document.createElement('span');
-  deleteMsg.classList.add('message--delete');
-  deleteMsg.innerHTML = 'x';
-  if(author === userName) {
-    deleteMsg.addEventListener('click', () => message.remove());
-  }
 
- if (author !== 'Chat Bot') {
-  message.appendChild(deleteMsg); 
-}
+  if (author === userName) {
+    deleteMsg.classList.add('message--delete');
+    deleteMsg.innerHTML = 'x';
+    message.appendChild(deleteMsg);
+    deleteMsg.addEventListener('click', () =>{
+      message.remove();
+      socket.emit('deleteMessage', id);
+    });
+  };
+
   message.appendChild(time);
   messagesList.appendChild(message);
 }
 
 // listeners
 
-loginForm.addEventListener('submit', e => {
+loginForm.addEventListener('submit', (e) => {
   login(e);
 });
 
-addMessageForm.addEventListener('submit', e => {
+addMessageForm.addEventListener('submit', (e) => {
   sendMessage(e);
-})
+});
 
 
